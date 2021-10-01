@@ -174,8 +174,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341961346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.023, y: -0.059, z: 0}
+  m_LocalScale: {x: 0.8375, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 721988466}
   m_RootOrder: 0
@@ -614,9 +614,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   jumpSpeed: 20
+  dashSpeed: 12
   FeetCollider: {fileID: 341961347}
   IdleSprite: {fileID: -6869773987950756324, guid: 37a2c8bb58217f04aa241065cc54087d, type: 3}
   FallingSprite: {fileID: -4635356164159159118, guid: 37a2c8bb58217f04aa241065cc54087d, type: 3}
+  dashTime: 0
+  StartDashTime: 0.1
 --- !u!1 &1180768490
 GameObject:
   m_ObjectHideFlags: 0
