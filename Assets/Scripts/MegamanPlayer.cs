@@ -12,6 +12,8 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] Sprite FallingSprite;
     [SerializeField] float dashTime;
     [SerializeField] float StartDashTime;
+    float NormalJumpSpeed;
+    float DashingJumpSpeed;
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -29,6 +31,10 @@ public class MegamanPlayer : MonoBehaviour
         myMainCollider = GetComponent<BoxCollider2D>();
 
         dashTime = StartDashTime;
+        NormalJumpSpeed = jumpSpeed;
+        DashingJumpSpeed = jumpSpeed * 5;
+
+        //StartCoroutine(ShowTime());
     }
 
     // Update is called once per frame
@@ -39,8 +45,20 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
+       //Debug.Log("jumpvalue" + jumpSpeed);
     }
-
+    /*
+    IEnumerator ShowTime()
+    {
+        int count = 0;
+        while(true)
+        {
+            yield return new WaitForSeconds(1f);
+            count++;
+            Debug.Log("Time: " + count);
+        }
+    }
+    */
     void Movement()
     {
         float CurrentMovement = Input.GetAxis("Horizontal");
@@ -66,14 +84,9 @@ public class MegamanPlayer : MonoBehaviour
             myAnimator.SetBool("IsJumping", false);
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                float extraJumpSpeedForDashing = 1.0f;
-                if(myAnimator.GetBool("IsDashing"))
-                {
-                    extraJumpSpeedForDashing = 20.0f;
-                }
                 myAnimator.SetTrigger("JumpStartTrigger");
                 myAnimator.SetBool("IsJumping", true);
-                myRigidBody2D.AddForce(new Vector2(0, jumpSpeed*extraJumpSpeedForDashing), ForceMode2D.Impulse);
+                myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
                 
             }
         }
@@ -137,6 +150,7 @@ public class MegamanPlayer : MonoBehaviour
                 }
                 else
                 {
+                    jumpSpeed = DashingJumpSpeed;
                     dashTime -= Time.deltaTime;
                     myAnimator.SetBool("IsDashing", true);
                     if (transform.localScale.x == 1)
@@ -148,15 +162,11 @@ public class MegamanPlayer : MonoBehaviour
                         myRigidBody2D.velocity = Vector2.left * dashSpeed;
                     }
                 }
-                /*
-                lastTimePressed = Time.time;
-                myAnimator.SetBool("IsDashing", true);
-                myRigidBody2D.AddForce(new Vector2(dashSpeed * transform.localScale.x, 0), ForceMode2D.Impulse);
-                */
             }
         }
         else
         {
+            jumpSpeed = NormalJumpSpeed;
             myAnimator.SetBool("IsDashing", false);
         }
     }
