@@ -6,6 +6,7 @@ public class MegamanPlayer : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float jumpSpeed;
+    [SerializeField] float dashJumpSpeedMultiplier;
     [SerializeField] float dashSpeed;
     [SerializeField] BoxCollider2D FeetCollider;
     [SerializeField] Sprite IdleSprite;
@@ -15,7 +16,11 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] GameObject bullet,bullet2;
     float NormalJumpSpeed;
     float DashingJumpSpeed;
+<<<<<<< HEAD
 
+=======
+    float lastPressedFrame;
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -34,7 +39,8 @@ public class MegamanPlayer : MonoBehaviour
 
         dashTime = StartDashTime;
         NormalJumpSpeed = jumpSpeed;
-        DashingJumpSpeed = jumpSpeed * 5;
+        DashingJumpSpeed = jumpSpeed * dashJumpSpeedMultiplier;
+        lastPressedFrame = 0;
 
         //StartCoroutine(ShowTime());
     }
@@ -47,12 +53,18 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
+<<<<<<< HEAD
 
        if(transform.localScale==new Vector3 (-1,1,0))
        {
            print("hola");
        }
        //Debug.Log("jumpvalue" + jumpSpeed);
+=======
+       //Debug.Log("jumpspeedvalue " + jumpSpeed);
+       //Debug.Log("lastPressed " + lastPressedFrame + " time " + Time.deltaTime);
+
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     }
     /*
     IEnumerator ShowTime()
@@ -172,7 +184,8 @@ public class MegamanPlayer : MonoBehaviour
                 }
                 else
                 {
-                    jumpSpeed = DashingJumpSpeed;
+                    lastPressedFrame = Time.deltaTime;
+                    StartCoroutine(ChangeJumpSpeed());
                     dashTime -= Time.deltaTime;
                     myAnimator.SetBool("IsDashing", true);
                     if (transform.localScale.x == 1)
@@ -188,9 +201,18 @@ public class MegamanPlayer : MonoBehaviour
         }
         else
         {
-            jumpSpeed = NormalJumpSpeed;
             myAnimator.SetBool("IsDashing", false);
         }
     }
+<<<<<<< HEAD
+=======
+
+    IEnumerator ChangeJumpSpeed()
+    {
+        jumpSpeed = DashingJumpSpeed;
+        yield return new WaitForSeconds(1f);
+        jumpSpeed = NormalJumpSpeed;
+    }
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     
 }
