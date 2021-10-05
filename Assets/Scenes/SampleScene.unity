@@ -923,6 +923,8 @@ MonoBehaviour:
   FallingSprite: {fileID: -4635356164159159118, guid: 37a2c8bb58217f04aa241065cc54087d, type: 3}
   dashTime: 0
   StartDashTime: 0.1
+  bullet: {fileID: 8311290094140164984, guid: a6019fced46bed44190686fa27b387d5, type: 3}
+  bullet2: {fileID: 6543202943432772704, guid: 59d054a4848e2494ca5417c1d23b5ac0, type: 3}
 --- !u!1 &1180768490
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,7 +941,7 @@ GameObject:
   - component: {fileID: 1180768494}
   m_Layer: 6
   m_Name: Foreground
-  m_TagString: Untagged
+  m_TagString: Foreground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

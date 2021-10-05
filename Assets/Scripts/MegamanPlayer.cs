@@ -12,8 +12,10 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] Sprite FallingSprite;
     [SerializeField] float dashTime;
     [SerializeField] float StartDashTime;
+    [SerializeField] GameObject bullet,bullet2;
     float NormalJumpSpeed;
     float DashingJumpSpeed;
+
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -45,6 +47,11 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
+
+       if(transform.localScale==new Vector3 (-1,1,0))
+       {
+           print("hola");
+       }
        //Debug.Log("jumpvalue" + jumpSpeed);
     }
     /*
@@ -59,6 +66,11 @@ public class MegamanPlayer : MonoBehaviour
         }
     }
     */
+    public Vector3 getScale()
+    {
+        return transform.localScale;
+    }
+
     void Movement()
     {
         float CurrentMovement = Input.GetAxis("Horizontal");
@@ -129,6 +141,16 @@ public class MegamanPlayer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X))
         {
             myAnimator.SetLayerWeight(1, 1);
+            if(transform.localScale==new Vector3(1,1,0)||transform.localScale==new Vector3(1,1,1))
+            {
+                Instantiate(bullet, transform.position - new Vector3(0, 0, 0), transform.rotation);
+            }
+            if(transform.localScale==new Vector3(-1,1,0))
+            {
+                Instantiate(bullet2, transform.position - new Vector3(0, 0, 0), transform.rotation);
+            }
+            
+        
         }
         else if(Input.GetKeyUp(KeyCode.X))
         {
@@ -170,4 +192,5 @@ public class MegamanPlayer : MonoBehaviour
             myAnimator.SetBool("IsDashing", false);
         }
     }
+    
 }
