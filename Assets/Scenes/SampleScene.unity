@@ -917,6 +917,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   jumpSpeed: 20
+  dashJumpSpeedMultiplier: 1.25
   dashSpeed: 12
   FeetCollider: {fileID: 341961347}
   IdleSprite: {fileID: -6869773987950756324, guid: 37a2c8bb58217f04aa241065cc54087d, type: 3}

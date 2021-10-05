@@ -6,6 +6,7 @@ public class MegamanPlayer : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float jumpSpeed;
+    [SerializeField] float dashJumpSpeedMultiplier;
     [SerializeField] float dashSpeed;
     [SerializeField] BoxCollider2D FeetCollider;
     [SerializeField] Sprite IdleSprite;
@@ -14,6 +15,7 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] float StartDashTime;
     float NormalJumpSpeed;
     float DashingJumpSpeed;
+    float lastPressedFrame;
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -32,7 +34,8 @@ public class MegamanPlayer : MonoBehaviour
 
         dashTime = StartDashTime;
         NormalJumpSpeed = jumpSpeed;
-        DashingJumpSpeed = jumpSpeed * 5;
+        DashingJumpSpeed = jumpSpeed * dashJumpSpeedMultiplier;
+        lastPressedFrame = 0;
 
         //StartCoroutine(ShowTime());
     }
@@ -45,7 +48,9 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
-       //Debug.Log("jumpvalue" + jumpSpeed);
+       //Debug.Log("jumpspeedvalue " + jumpSpeed);
+       //Debug.Log("lastPressed " + lastPressedFrame + " time " + Time.deltaTime);
+
     }
     /*
     IEnumerator ShowTime()
@@ -150,7 +155,8 @@ public class MegamanPlayer : MonoBehaviour
                 }
                 else
                 {
-                    jumpSpeed = DashingJumpSpeed;
+                    lastPressedFrame = Time.deltaTime;
+                    StartCoroutine(ChangeJumpSpeed());
                     dashTime -= Time.deltaTime;
                     myAnimator.SetBool("IsDashing", true);
                     if (transform.localScale.x == 1)
@@ -166,8 +172,15 @@ public class MegamanPlayer : MonoBehaviour
         }
         else
         {
-            jumpSpeed = NormalJumpSpeed;
             myAnimator.SetBool("IsDashing", false);
         }
     }
+
+    IEnumerator ChangeJumpSpeed()
+    {
+        jumpSpeed = DashingJumpSpeed;
+        yield return new WaitForSeconds(1f);
+        jumpSpeed = NormalJumpSpeed;
+    }
+    
 }
