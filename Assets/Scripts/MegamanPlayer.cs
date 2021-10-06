@@ -16,6 +16,8 @@ public class MegamanPlayer : MonoBehaviour
     float NormalJumpSpeed;
     float DashingJumpSpeed;
     float lastPressedFrame;
+    bool canDoubleJump;
+    int jumpCounter;
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -87,17 +89,32 @@ public class MegamanPlayer : MonoBehaviour
         {
             myAnimator.SetBool("isFalling", false);
             myAnimator.SetBool("IsJumping", false);
-            if (Input.GetKeyDown(KeyCode.Space))
+
+            if (Input.GetKeyDown(KeyCode.Space) && jumpCounter == 0)
             {
+                jumpSpeed = 20;
                 myAnimator.SetTrigger("JumpStartTrigger");
                 myAnimator.SetBool("IsJumping", true);
                 myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+                jumpCounter = 1;
                 
+            }
+        }
+        if(!myAnimator.GetBool("isFalling"))
+        {
+            if (Input.GetKeyDown(KeyCode.Space)&& jumpCounter <= 1)
+            {
+                jumpSpeed = jumpSpeed / 3;
+                myAnimator.SetTrigger("JumpStartTrigger");
+                myAnimator.SetBool("IsJumping", true);
+                myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+                //canDoubleJump = false;
+                jumpCounter = 2;
             }
         }
         else
         {
-           // myAnimator.SetBool("isFalling", true);
+           myAnimator.SetBool("isFalling", true);
         }
         
     }
@@ -106,7 +123,7 @@ public class MegamanPlayer : MonoBehaviour
     {
         /*return FeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));*/
 
-       
+        jumpCounter = 0;
         RaycastHit2D GroundRaycast = Physics2D.Raycast(myMainCollider.bounds.center, Vector2.down, myMainCollider.bounds.extents.y + 0.35f, LayerMask.GetMask("Ground"));
         Debug.DrawRay(myMainCollider.bounds.center, new Vector2(0, (myMainCollider.bounds.extents.y + 0.35f) * -1), Color.red);
 
