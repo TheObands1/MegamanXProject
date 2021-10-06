@@ -13,11 +13,19 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] Sprite FallingSprite;
     [SerializeField] float dashTime;
     [SerializeField] float StartDashTime;
+    [SerializeField] GameObject bullet,bullet2;
     float NormalJumpSpeed;
     float DashingJumpSpeed;
+<<<<<<< HEAD
+
+=======
     float lastPressedFrame;
+<<<<<<< HEAD
     bool canDoubleJump;
     int jumpCounter;
+=======
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
+>>>>>>> 4a4a11554c4e054e2bc6ae215c8e3cd49a28058d
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -50,9 +58,18 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
+<<<<<<< HEAD
+
+       if(transform.localScale==new Vector3 (-1,1,0))
+       {
+           print("hola");
+       }
+       //Debug.Log("jumpvalue" + jumpSpeed);
+=======
        //Debug.Log("jumpspeedvalue " + jumpSpeed);
        //Debug.Log("lastPressed " + lastPressedFrame + " time " + Time.deltaTime);
 
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     }
     /*
     IEnumerator ShowTime()
@@ -66,6 +83,11 @@ public class MegamanPlayer : MonoBehaviour
         }
     }
     */
+    public Vector3 getScale()
+    {
+        return transform.localScale;
+    }
+
     void Movement()
     {
         float CurrentMovement = Input.GetAxis("Horizontal");
@@ -151,6 +173,16 @@ public class MegamanPlayer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X))
         {
             myAnimator.SetLayerWeight(1, 1);
+            if(transform.localScale==new Vector3(1,1,0)||transform.localScale==new Vector3(1,1,1))
+            {
+                Instantiate(bullet, transform.position - new Vector3(0, 0, 0), transform.rotation);
+            }
+            if(transform.localScale==new Vector3(-1,1,0))
+            {
+                Instantiate(bullet2, transform.position - new Vector3(0, 0, 0), transform.rotation);
+            }
+            
+        
         }
         else if(Input.GetKeyUp(KeyCode.X))
         {
@@ -192,6 +224,8 @@ public class MegamanPlayer : MonoBehaviour
             myAnimator.SetBool("IsDashing", false);
         }
     }
+<<<<<<< HEAD
+=======
 
     IEnumerator ChangeJumpSpeed()
     {
@@ -199,5 +233,6 @@ public class MegamanPlayer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         jumpSpeed = NormalJumpSpeed;
     }
+>>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     
 }
