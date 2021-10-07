@@ -7,8 +7,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField]Animator myAnimator;
     [SerializeField] Collision2D collision2D;
-    
-
     private float colision=1;
     private bool isColision = true;
     // Start is called before the first frame update

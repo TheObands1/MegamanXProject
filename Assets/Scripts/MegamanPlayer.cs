@@ -16,16 +16,7 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] GameObject bullet,bullet2;
     float NormalJumpSpeed;
     float DashingJumpSpeed;
-<<<<<<< HEAD
-
-=======
-    float lastPressedFrame;
-<<<<<<< HEAD
     bool canDoubleJump;
-    int jumpCounter;
-=======
->>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
->>>>>>> 4a4a11554c4e054e2bc6ae215c8e3cd49a28058d
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -45,9 +36,7 @@ public class MegamanPlayer : MonoBehaviour
         dashTime = StartDashTime;
         NormalJumpSpeed = jumpSpeed;
         DashingJumpSpeed = jumpSpeed * dashJumpSpeedMultiplier;
-        lastPressedFrame = 0;
 
-        //StartCoroutine(ShowTime());
     }
 
     // Update is called once per frame
@@ -58,19 +47,8 @@ public class MegamanPlayer : MonoBehaviour
        CharacterFallingDetector();
        Fire();
        Dash();
-<<<<<<< HEAD
-
-       if(transform.localScale==new Vector3 (-1,1,0))
-       {
-           print("hola");
-       }
-       //Debug.Log("jumpvalue" + jumpSpeed);
-=======
-       //Debug.Log("jumpspeedvalue " + jumpSpeed);
-       //Debug.Log("lastPressed " + lastPressedFrame + " time " + Time.deltaTime);
-
->>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     }
+
     /*
     IEnumerator ShowTime()
     {
@@ -83,6 +61,7 @@ public class MegamanPlayer : MonoBehaviour
         }
     }
     */
+
     public Vector3 getScale()
     {
         return transform.localScale;
@@ -111,47 +90,37 @@ public class MegamanPlayer : MonoBehaviour
         {
             myAnimator.SetBool("isFalling", false);
             myAnimator.SetBool("IsJumping", false);
+            canDoubleJump = false;
 
-            if (Input.GetKeyDown(KeyCode.Space) && jumpCounter == 0)
+            if (Input.GetKeyDown(KeyCode.Space) && !canDoubleJump)
             {
-                jumpSpeed = 20;
+                canDoubleJump = true;
                 myAnimator.SetTrigger("JumpStartTrigger");
                 myAnimator.SetBool("IsJumping", true);
                 myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
-                jumpCounter = 1;
-                
             }
         }
-        if(!myAnimator.GetBool("isFalling"))
+
+        if(myAnimator.GetBool("isFalling"))
         {
-            if (Input.GetKeyDown(KeyCode.Space)&& jumpCounter <= 1)
+            if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump)
             {
-                jumpSpeed = jumpSpeed / 3;
+                float NewjumpSpeed = jumpSpeed / 1.25f;
                 myAnimator.SetTrigger("JumpStartTrigger");
                 myAnimator.SetBool("IsJumping", true);
-                myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
-                //canDoubleJump = false;
-                jumpCounter = 2;
+                myRigidBody2D.AddForce(new Vector2(0, NewjumpSpeed), ForceMode2D.Impulse);
+                canDoubleJump = false;
             }
         }
-        else
-        {
-           myAnimator.SetBool("isFalling", true);
-        }
-        
     }
 
     bool IsTouchingTheGround()
     {
         /*return FeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));*/
-
-        jumpCounter = 0;
         RaycastHit2D GroundRaycast = Physics2D.Raycast(myMainCollider.bounds.center, Vector2.down, myMainCollider.bounds.extents.y + 0.35f, LayerMask.GetMask("Ground"));
         Debug.DrawRay(myMainCollider.bounds.center, new Vector2(0, (myMainCollider.bounds.extents.y + 0.35f) * -1), Color.red);
-
         return GroundRaycast.collider != null;
         
-
     }
 
     void AfterJumpStartEvent()
@@ -181,8 +150,6 @@ public class MegamanPlayer : MonoBehaviour
             {
                 Instantiate(bullet2, transform.position - new Vector3(0, 0, 0), transform.rotation);
             }
-            
-        
         }
         else if(Input.GetKeyUp(KeyCode.X))
         {
@@ -204,7 +171,6 @@ public class MegamanPlayer : MonoBehaviour
                 }
                 else
                 {
-                    lastPressedFrame = Time.deltaTime;
                     StartCoroutine(ChangeJumpSpeed());
                     dashTime -= Time.deltaTime;
                     myAnimator.SetBool("IsDashing", true);
@@ -224,15 +190,11 @@ public class MegamanPlayer : MonoBehaviour
             myAnimator.SetBool("IsDashing", false);
         }
     }
-<<<<<<< HEAD
-=======
-
     IEnumerator ChangeJumpSpeed()
     {
         jumpSpeed = DashingJumpSpeed;
         yield return new WaitForSeconds(1f);
         jumpSpeed = NormalJumpSpeed;
     }
->>>>>>> 70095a1d12b29a1d36667c03a926cb2af3c73eae
     
 }
