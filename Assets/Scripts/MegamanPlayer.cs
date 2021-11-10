@@ -14,9 +14,13 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] float dashTime;
     [SerializeField] float StartDashTime;
     [SerializeField] GameObject bullet,bullet2;
+    [SerializeField] GameObject vfx_Death;
+    [SerializeField] AudioClip sfx_Death;
+
     float NormalJumpSpeed;
     float DashingJumpSpeed;
     bool canDoubleJump;
+    bool isPaused = false;
     
     Animator myAnimator;
     SpriteRenderer myRenderer;
@@ -42,11 +46,14 @@ public class MegamanPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       Movement();
-       Jump();
-       CharacterFallingDetector();
-       Fire();
-       Dash();
+        if(!isPaused)
+        {
+            Movement();
+            Jump();
+            CharacterFallingDetector();
+            Fire();
+            Dash();
+        }
     }
 
     /*
@@ -139,7 +146,7 @@ public class MegamanPlayer : MonoBehaviour
 
     void Fire()
     {
-        if(Input.GetKeyDown(KeyCode.X))
+        if(Input.GetKeyDown(KeyCode.O))
         {
             myAnimator.SetLayerWeight(1, 1);
             if(transform.localScale==new Vector3(1,1,0)||transform.localScale==new Vector3(1,1,1))
@@ -151,7 +158,7 @@ public class MegamanPlayer : MonoBehaviour
                 Instantiate(bullet2, transform.position - new Vector3(0, 0, 0), transform.rotation);
             }
         }
-        else if(Input.GetKeyUp(KeyCode.X))
+        else if(Input.GetKeyUp(KeyCode.O))
         {
             myAnimator.SetLayerWeight(1, 0);
         }
@@ -196,5 +203,26 @@ public class MegamanPlayer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         jumpSpeed = NormalJumpSpeed;
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator Die()
+    {
+        myAnimator.SetBool("IsDead", true);
+        isPaused = true;
+        myRigidBody2D.velocity = Vector2.zero;
+        myRigidBody2D.isKinematic = true;
+        yield return new WaitForSeconds(1f);
+        AudioSource.PlayClipAtPoint(sfx_Death, Camera.main.transform.position);
+        Instantiate(vfx_Death, transform.position, transform.rotation);
+        Destroy(gameObject);
+
+    }
+
 }
