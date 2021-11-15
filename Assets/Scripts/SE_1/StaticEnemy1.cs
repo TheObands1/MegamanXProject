@@ -9,10 +9,14 @@ public class StaticEnemy1 : MonoBehaviour
     float currentFireTime;
     float SpriteSizeInX;
     bool isEnemyNear;
+    HealthComponent myHealthComponent;
+    bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
         SpriteSizeInX = GetComponent<SpriteRenderer>().bounds.size.x;
+        myHealthComponent = GetComponent<HealthComponent>();
         isEnemyNear = false;
     }
 
@@ -23,7 +27,16 @@ public class StaticEnemy1 : MonoBehaviour
         {
             FireBullet();
         }
+        CheckIfDead();
 
+    }
+
+    void CheckIfDead()
+    {
+        if (myHealthComponent.GetHealth() <= 0)
+        {
+            isDead = true;
+        }
     }
 
     public void FireBullet()
@@ -39,6 +52,9 @@ public class StaticEnemy1 : MonoBehaviour
     {
         isEnemyNear = newState;
     }
-        
 
+    public bool GetIsDead()
+    {
+        return isDead;
+    }
 }

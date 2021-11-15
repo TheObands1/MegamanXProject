@@ -12,12 +12,16 @@ public class StaticEnemy2 : MonoBehaviour
     float currentFireTime;
     float SpriteSizeInX;
     float SpriteSizeInY;
+    HealthComponent myHealthComponent;
+    bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
         myAnimator = GetComponent<Animator>();
         SpriteSizeInX = GetComponent<SpriteRenderer>().bounds.size.x;
         SpriteSizeInY = GetComponent<SpriteRenderer>().bounds.size.y;
+        myHealthComponent = GetComponent<HealthComponent>();
     }
 
     // Update is called once per frame
@@ -31,6 +35,16 @@ public class StaticEnemy2 : MonoBehaviour
         else
         {
             myAnimator.SetBool("isSeeingPlayer", false);
+        }
+
+        CheckIfDead();
+    }
+
+    void CheckIfDead()
+    {
+        if (myHealthComponent.GetHealth() <= 0)
+        {
+            isDead = true;
         }
     }
 
@@ -49,5 +63,10 @@ public class StaticEnemy2 : MonoBehaviour
     {
         Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
         Gizmos.DrawSphere(transform.position, rangeOfDetection);
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
     }
 }

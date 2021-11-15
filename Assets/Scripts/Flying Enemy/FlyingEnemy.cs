@@ -12,6 +12,7 @@ public class FlyingEnemy : MonoBehaviour
     public AIPath myAiPathReference;
     Animator myAnimator;
     HealthComponent myHealthComponent;
+    bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,7 @@ public class FlyingEnemy : MonoBehaviour
         if(myHealthComponent.GetHealth() <= 0)
         {
             myAiPathReference.maxSpeed = 0.0f;
+            isDead = true;
         }
     }
 
@@ -71,6 +73,11 @@ public class FlyingEnemy : MonoBehaviour
         Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
         Gizmos.DrawSphere(transform.position, range);
         Gizmos.DrawLine(transform.position, player.transform.position);
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
     }
 }
 

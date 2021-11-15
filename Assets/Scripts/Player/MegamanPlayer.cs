@@ -26,8 +26,6 @@ public class MegamanPlayer : MonoBehaviour
     SpriteRenderer myRenderer;
     Rigidbody2D myRigidBody2D;
     BoxCollider2D myMainCollider;
-    
-
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +38,6 @@ public class MegamanPlayer : MonoBehaviour
         dashTime = StartDashTime;
         NormalJumpSpeed = jumpSpeed;
         DashingJumpSpeed = jumpSpeed * dashJumpSpeedMultiplier;
-
     }
 
     // Update is called once per frame
