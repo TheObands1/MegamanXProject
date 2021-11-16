@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 8ae142a82744dfa44843c012e45e2aaa
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Mega Man Battle Network
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: cb58b1f509188324cb1ff52fcfcde7f6, type: 3}
+  - {fileID: 12800000, guid: 94eb523fbdc2cd04cacdae8bca13af28, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

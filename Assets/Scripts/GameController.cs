@@ -1,41 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-
-    HealthComponent myHealthComponent;
-    UI myUI;
-    FlyingEnemy myFlyingEnemy;
-    StaticEnemy1 myStaticEnemy1;
-    StaticEnemy2 myStaticEnemy2;
-    public int enemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+    GameObject[] enemies;
+    GameObject[] player;
+    public Text enemyCount;
+    public Win WinScreen;
+    public GameOver gameOver;
+    public string time;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        myHealthComponent = GetComponent<HealthComponent>();
-        myUI = GetComponent<UI>();
-        myFlyingEnemy = GetComponent<FlyingEnemy>();
-        myStaticEnemy1 = GetComponent<StaticEnemy1>();
-        myStaticEnemy2 = GetComponent<StaticEnemy2>();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        winCondition();
+        gameOverCondition();    
+       
+    }
 
-        if (myFlyingEnemy.GetIsDead() || myStaticEnemy1.GetIsDead() || myStaticEnemy2.GetIsDead())
-            enemies -= 1;
-
-        if (enemies == 0)
-            myUI.LoadGame();
+    private void winCondition()
+    {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        enemyCount.text = "Enemies left: " + GetEnemiesLeft().ToString();
+        if (GetEnemiesLeft() == 0)
+        {
+            WinScreen.Setup(GetEnemiesLeft());
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+    private void gameOverCondition()
+    {
+        player = GameObject.FindGameObjectsWithTag("Player");
+        if (player.Length == 0)
+        {
+            gameOver.Setup(); 
+        }
+       
     }
 
     public int GetEnemiesLeft()
     {
-        return enemies;
+        return enemies.Length;
     }
+    public void mainMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
 }

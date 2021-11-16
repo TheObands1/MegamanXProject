@@ -16,12 +16,18 @@ public class MegamanPlayer : MonoBehaviour
     [SerializeField] GameObject bullet,bullet2;
     [SerializeField] GameObject vfx_Death;
     [SerializeField] AudioClip sfx_Death;
+    [SerializeField] AudioClip sfx_Jump;
+    [SerializeField] AudioClip sfx_Shoot;
+    [SerializeField] AudioClip sfx_Fall;
+    [SerializeField] AudioClip sfx_Dash;
 
     float NormalJumpSpeed;
     float DashingJumpSpeed;
     bool canDoubleJump;
     bool isPaused = false;
-    
+    public int sound = 0;
+    public bool placeHolder;
+
     Animator myAnimator;
     SpriteRenderer myRenderer;
     Rigidbody2D myRigidBody2D;
@@ -38,6 +44,7 @@ public class MegamanPlayer : MonoBehaviour
         dashTime = StartDashTime;
         NormalJumpSpeed = jumpSpeed;
         DashingJumpSpeed = jumpSpeed * dashJumpSpeedMultiplier;
+        placeHolder = IsTouchingTheGround();
     }
 
     // Update is called once per frame
@@ -89,12 +96,13 @@ public class MegamanPlayer : MonoBehaviour
 
     void Jump()
     {
-
+        
         if (IsTouchingTheGround() && !myAnimator.GetBool("IsJumping"))
         {
             myAnimator.SetBool("isFalling", false);
             myAnimator.SetBool("IsJumping", false);
             canDoubleJump = false;
+            
 
             if (Input.GetKeyDown(KeyCode.Space) && !canDoubleJump)
             {
@@ -102,11 +110,16 @@ public class MegamanPlayer : MonoBehaviour
                 myAnimator.SetTrigger("JumpStartTrigger");
                 myAnimator.SetBool("IsJumping", true);
                 myRigidBody2D.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+                AudioSource.PlayClipAtPoint(sfx_Jump, Camera.main.transform.position);
+                sound = 0;
+                
+
             }
         }
 
         if(myAnimator.GetBool("isFalling"))
         {
+            sound = 0;
             if (Input.GetKeyDown(KeyCode.Space) && canDoubleJump)
             {
                 float NewjumpSpeed = jumpSpeed / 1.25f;
@@ -114,8 +127,19 @@ public class MegamanPlayer : MonoBehaviour
                 myAnimator.SetBool("IsJumping", true);
                 myRigidBody2D.AddForce(new Vector2(0, NewjumpSpeed), ForceMode2D.Impulse);
                 canDoubleJump = false;
+                AudioSource.PlayClipAtPoint(sfx_Jump, Camera.main.transform.position);
+                sound = 0;
+                
+
             }
         }
+        
+        if (IsTouchingTheGround()&& sound==0)
+        {
+            AudioSource.PlayClipAtPoint(sfx_Fall, Camera.main.transform.position);
+            sound++;
+        }
+            
     }
 
     bool IsTouchingTheGround()
@@ -130,7 +154,7 @@ public class MegamanPlayer : MonoBehaviour
     void AfterJumpStartEvent()
     {
         myAnimator.SetBool("IsJumping", false);
-        myAnimator.SetBool("isFalling", true);
+        myAnimator.SetBool("isFalling", true);    
     }
 
     void CharacterFallingDetector()
@@ -149,16 +173,21 @@ public class MegamanPlayer : MonoBehaviour
             if(transform.localScale==new Vector3(1,1,0)||transform.localScale==new Vector3(1,1,1))
             {
                 Instantiate(bullet, transform.position - new Vector3(0, 0, 0), transform.rotation);
+                AudioSource.PlayClipAtPoint(sfx_Shoot, Camera.main.transform.position);
             }
             if(transform.localScale==new Vector3(-1,1,0))
             {
                 Instantiate(bullet2, transform.position - new Vector3(0, 0, 0), transform.rotation);
+                AudioSource.PlayClipAtPoint(sfx_Shoot, Camera.main.transform.position);
             }
+           
         }
         else if(Input.GetKeyUp(KeyCode.O))
         {
             myAnimator.SetLayerWeight(1, 0);
+            
         }
+        
     }
 
     void Dash()
@@ -167,11 +196,13 @@ public class MegamanPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                if(dashTime <= 0)
+                AudioSource.PlayClipAtPoint(sfx_Dash, Camera.main.transform.position);
+                if (dashTime <= 0)
                 {
                     dashTime = StartDashTime;
                     myRigidBody2D.velocity = Vector2.zero;
                     myAnimator.SetBool("IsDashing", false);
+                    
                 }
                 else
                 {

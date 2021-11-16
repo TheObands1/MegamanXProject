@@ -8,6 +8,7 @@ public class FlyingEnemy : MonoBehaviour
     [SerializeField] float range;
     [SerializeField] float Speed;
     [SerializeField] GameObject player;
+    [SerializeField] AudioClip sfx_Death;
 
     public AIPath myAiPathReference;
     Animator myAnimator;
@@ -34,6 +35,7 @@ public class FlyingEnemy : MonoBehaviour
         {
             myAiPathReference.maxSpeed = 0.0f;
             isDead = true;
+            AudioSource.PlayClipAtPoint(sfx_Death, Camera.main.transform.position);
         }
     }
 

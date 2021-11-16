@@ -6,11 +6,14 @@ public class StaticEnemy1 : MonoBehaviour
 {
     [SerializeField] GameObject EnemyBullet;
     [SerializeField] float TimeBetweenFires;
+    [SerializeField] AudioClip sfx_Death;
+
     float currentFireTime;
     float SpriteSizeInX;
     bool isEnemyNear;
-    HealthComponent myHealthComponent;
     bool isDead = false;
+    HealthComponent myHealthComponent;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,7 @@ public class StaticEnemy1 : MonoBehaviour
         if (myHealthComponent.GetHealth() <= 0)
         {
             isDead = true;
+            AudioSource.PlayClipAtPoint(sfx_Death, Camera.main.transform.position);
         }
     }
 

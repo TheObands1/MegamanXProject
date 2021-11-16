@@ -8,6 +8,7 @@ public class StaticEnemy2 : MonoBehaviour
     [SerializeField] GameObject RightBullet;
     [SerializeField] float TimeBetweenFires;
     [SerializeField] float rangeOfDetection;
+    [SerializeField] AudioClip sfx_Death;
     Animator myAnimator;
     float currentFireTime;
     float SpriteSizeInX;
@@ -45,6 +46,7 @@ public class StaticEnemy2 : MonoBehaviour
         if (myHealthComponent.GetHealth() <= 0)
         {
             isDead = true;
+            AudioSource.PlayClipAtPoint(sfx_Death, Camera.main.transform.position);
         }
     }
 
